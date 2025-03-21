@@ -46,13 +46,22 @@
 
     input1.addEventListener('input', updateResult);
     input2.addEventListener('input', updateResult);
-        
+
     function updateResult() {
       result.innerText = '';
-      const val1 = math.simplify(math.parse(input1.value));
-      const val2 = math.simplify(math.parse(input2.value));
-      const isEqual = val1.equals(val2); 
-      result.innerText = isEqual ? 'equals' : 'does not equal'
+      let isEqual = null;
+      try {
+        isEqual = math.evaluate(input1.value).equals(math.evaluate(input2.value));
+      } catch {
+        try {
+          isEqual = math.simplify(input1.value).equals(math.simplify(input2.value));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      if (isEqual !== null) {
+        result.innerText = isEqual ? 'equals' : 'does not equal'
+      }
     }
 
     updateResult();
