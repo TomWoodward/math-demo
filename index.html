@@ -82,6 +82,9 @@
         }
       } catch {
         try {
+          // normally implicit multiplication will not equal explicit multiplication
+          // so we reformat the simplified expressions and check for equality
+          // on the result.
           const fn1 = math.parse(math.simplify(input1.value).toString({parenthesis: 'all', implicit: 'show'}))
           const fn2 = math.parse(math.simplify(input2.value).toString({parenthesis: 'all', implicit: 'show'}))
           isEqual = fn1.equals(fn2);
