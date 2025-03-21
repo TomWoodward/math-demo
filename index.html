@@ -10,6 +10,16 @@
     <input type="text" id="thing1" value="2^5 / sqrt(9)">
     <span id="result"></span>
     <input type="text" id="thing2" value="2 * 2 * 2 * 2 * 2 / 3">
+
+    <p>
+      type something in the boxes above to see if they are equal.
+
+      if the expressions can be evaluated (they don't have variables) then it'll recognize unit conversions. eg: '1m' equals '1000m' equals '500m * 2'.
+
+      if there are variables, then units are treated like variables and are not converted. eg: '2km * x' does not equal '2000m * x'. but '2^5 / sqrt(9)' does equal '2 * 2 * 2 * 2 * 2 / 3'.
+
+      matrices are typed like this: '[[1, 2], [3, 4]]'.
+    </p>
   </div>
   <style>
 
@@ -37,6 +47,13 @@
         font-weight: bold;
         font-size: 30px;
       }
+
+      p {
+        max-width: 600px;
+        text-align: center;
+        font-size: 20px;
+        white-space: pre-wrap;
+      }
     }
   </style>
   <script>
@@ -47,24 +64,22 @@
     input1.addEventListener('input', updateResult);
     input2.addEventListener('input', updateResult);
 
-    /*
-     * this function handles comparing two math inputs. it works with algebra
-     * and with unit conversions but not with both at the same time.
-     * eg:
-     *     '1m' equals '1000m' equals '500m * 2' but '2km * x' does not equal '2000m * x'
-     *      while 'm x + b' does equal 'm * x + b' and '2^5 / sqrt(9)' equals '2 * 2 * 2 * 2 * 2 / 3'
-     */
     function updateResult() {
       result.innerText = '';
       let isEqual = null;
       try {
-        isEqual = math.evaluate(input1.value).equals(math.evaluate(input2.value));
+        const eval1 = math.evaluate(input1.value);
+        const eval2 = math.evaluate(input2.value);
+        if (typeof eval1 === 'number') {
+          isEqual = eval1 === eval2;
+        } else {
+          isEqual = eval1.equals(eval2);
+        }
       } catch {
         try {
-          isEqual = math.symbolicEqual(
-            math.parse(input1.value).toString({parenthesis: 'all', implicit: 'show'}),
-            math.parse(input2.value).toString({parenthesis: 'all', implicit: 'show'}),
-          );
+          const fn1 = math.parse(math.simplify(input1.value).toString({parenthesis: 'all', implicit: 'show'}))
+          const fn2 = math.parse(math.simplify(input2.value).toString({parenthesis: 'all', implicit: 'show'}))
+          isEqual = fn1.equals(fn2);
         } catch (e) {
           console.error(e);
         }
