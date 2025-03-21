@@ -7,13 +7,18 @@
 </head>
 <body>
   <div class="container">
+
+    <p>
+      testing fuzzy matching math expressions for use in assessment submission evaluation.
+
+      type something in the boxes above to see if they are equal.
+    </p>
+
     <input type="text" id="thing1" value="2^5 / sqrt(9)">
     <span id="result"></span>
     <input type="text" id="thing2" value="2 * 2 * 2 * 2 * 2 / 3">
 
     <p>
-      type something in the boxes above to see if they are equal.
-
       if the expressions can be evaluated (they don't have variables) then it'll recognize unit conversions. eg: '1m' equals '1000m' equals '500m * 2'.
 
       if there are variables, then units are treated like variables and are not converted. eg: '2km * x' does not equal '2000m * x'. but '2^5 / sqrt(9)' does equal '2 * 2 * 2 * 2 * 2 / 3'.
