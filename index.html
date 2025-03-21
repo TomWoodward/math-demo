@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="description" content="math.js | basic usage">
+  <title>math.js | basic usage</title>
+  <script src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
+</head>
+<body>
+  <div class="container">
+    <input type="text" id="thing1" value="2^5 / sqrt(9)">
+    <span id="result"></span>
+    <input type="text" id="thing2" value="2 * 2 * 2 * 2 * 2 / 3">
+  </div>
+  <style>
+
+    html, body, .container {
+      height: 100%;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      input {
+        padding: 10px;
+        font-size: 30px;
+        border-radius: 10px;
+      }
+
+      #result {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 30px;
+      }
+    }
+  </style>
+  <script>
+    const result = document.getElementById('result');
+    const input1 = document.getElementById('thing1');
+    const input2 = document.getElementById('thing2');
+
+    input1.addEventListener('input', updateResult);
+    input2.addEventListener('input', updateResult);
+        
+    function updateResult() {
+      result.innerText = '';
+      const val1 = math.simplify(math.parse(input1.value));
+      const val2 = math.simplify(math.parse(input2.value));
+      const isEqual = val1.equals(val2); 
+      result.innerText = isEqual ? 'equals' : 'does not equal'
+    }
+
+    updateResult();
+  </script>
+</body>
+</html>
